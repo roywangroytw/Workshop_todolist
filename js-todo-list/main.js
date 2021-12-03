@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
     for (var i = 0; i < itemStorageObject.length; i++) {
       const newItem = document.createElement("li");
       const newDeletebtn = deleteBtn.cloneNode();
-      newItem.innerText = itemStorageObject[i];
+      newItem.innerText = itemStorageObject[i].content;
+      newItem.dataset.id = itemStorageObject[i].id;
+      if (itemStorageObject[i].status === true) {
+        newItem.className = "checked";
+      }
       newDeletebtn.innerText = "x";
       newItem.appendChild(newDeletebtn);
       toDoItemBox.insertAdjacentElement("afterbegin", newItem);
@@ -30,8 +34,26 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.className === "checked"
     ) {
       e.target.classList.remove("checked");
+      const target = itemStorageObject.find(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      const index = itemStorageObject.findIndex(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      target.status = false;
+      itemStorageObject[index] = target;
+      localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     } else {
       e.target.classList.add("checked");
+      const target = itemStorageObject.find(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      const index = itemStorageObject.findIndex(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      target.status = true;
+      itemStorageObject[index] = target;
+      localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     }
 
     // Task 2
@@ -54,14 +76,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let inputValue = taskInput.value;
     const newItem = document.createElement("li");
     const newDeletebtn = deleteBtn.cloneNode();
+    const identifier = Date.now();
+    newItem.dataset.aaa = identifier;
 
     if (inputValue === "") return alert("Please input something at least!");
 
     // 把input加入要存入storage的陣列, 並且更新localStorage的值
-    itemStorageObject.push(inputValue);
+    itemStorageObject.push({
+      id: identifier,
+      status: false,
+      content: inputValue,
+    });
     localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
-    console.log(new Date());
-    console.log({ date: new Date(), status: "unchecked", content: inputValue });
     // ({check: true, content: "aasdasd", id: 4}, {}, {}, {}}
     // {date: new Date(), status: "unchecked",content: inputValue}
 
