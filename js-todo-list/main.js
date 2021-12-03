@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.className === "checked"
     ) {
       e.target.classList.remove("checked");
+      itemStorageObject.find((obj) => obj.id === e.target.dataset.id).status =
+        "checked";
     } else {
       e.target.classList.add("checked");
     }
@@ -54,14 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let inputValue = taskInput.value;
     const newItem = document.createElement("li");
     const newDeletebtn = deleteBtn.cloneNode();
+    const identifier = Date.now();
+    newItem.dataset.id = identifier;
 
     if (inputValue === "") return alert("Please input something at least!");
 
     // 把input加入要存入storage的陣列, 並且更新localStorage的值
-    itemStorageObject.push(inputValue);
+    itemStorageObject.push({
+      id: identifier,
+      status: false,
+      content: inputValue,
+    });
     localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
-    console.log(new Date());
-    console.log({ date: new Date(), status: "unchecked", content: inputValue });
     // ({check: true, content: "aasdasd", id: 4}, {}, {}, {}}
     // {date: new Date(), status: "unchecked",content: inputValue}
 
