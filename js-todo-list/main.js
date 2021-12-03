@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
     for (var i = 0; i < itemStorageObject.length; i++) {
       const newItem = document.createElement("li");
       const newDeletebtn = deleteBtn.cloneNode();
-      newItem.innerText = itemStorageObject[i];
+      newItem.innerText = itemStorageObject[i].content;
+      newItem.dataset.id = itemStorageObject[i].id;
+      if (itemStorageObject[i].status === true) {
+        newItem.className = "checked";
+      }
       newDeletebtn.innerText = "x";
       newItem.appendChild(newDeletebtn);
       toDoItemBox.insertAdjacentElement("afterbegin", newItem);
@@ -30,13 +34,26 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.className === "checked"
     ) {
       e.target.classList.remove("checked");
-      console.log(e.target.dataset.id);
       const target = itemStorageObject.find(
-        (obj) => obj.id === e.target.dataset.id
+        (obj) => obj.id.toString() === e.target.dataset.id
       );
-      console.log(target);
+      const index = itemStorageObject.findIndex(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      target.status = false;
+      itemStorageObject[index] = target;
+      localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     } else {
       e.target.classList.add("checked");
+      const target = itemStorageObject.find(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      const index = itemStorageObject.findIndex(
+        (obj) => obj.id.toString() === e.target.dataset.id
+      );
+      target.status = true;
+      itemStorageObject[index] = target;
+      localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     }
 
     // Task 2
@@ -60,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newItem = document.createElement("li");
     const newDeletebtn = deleteBtn.cloneNode();
     const identifier = Date.now();
-    newItem.setAttribute("data-id", identifier);
+    newItem.dataset.aaa = identifier;
 
     if (inputValue === "") return alert("Please input something at least!");
 
