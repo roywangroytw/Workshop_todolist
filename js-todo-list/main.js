@@ -30,8 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.className === "checked"
     ) {
       e.target.classList.remove("checked");
-      itemStorageObject.find((obj) => obj.id === e.target.dataset.id).status =
-        "checked";
+      console.log(e.target.dataset.id);
+      const target = itemStorageObject.find(
+        (obj) => obj.id === e.target.dataset.id
+      );
+      console.log(target);
     } else {
       e.target.classList.add("checked");
     }
@@ -57,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newItem = document.createElement("li");
     const newDeletebtn = deleteBtn.cloneNode();
     const identifier = Date.now();
-    newItem.dataset.id = identifier;
+    newItem.setAttribute("data-id", identifier);
 
     if (inputValue === "") return alert("Please input something at least!");
 
