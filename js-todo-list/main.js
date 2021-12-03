@@ -60,7 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 把input加入要存入storage的陣列, 並且更新localStorage的值
     itemStorageObject.push(inputValue);
     localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
+    console.log(new Date());
+    console.log({ date: new Date(), status: "unchecked", content: inputValue });
     // ({check: true, content: "aasdasd", id: 4}, {}, {}, {}}
+    // {date: new Date(), status: "unchecked",content: inputValue}
 
     newItem.innerText = inputValue;
     newDeletebtn.innerText = "x";
