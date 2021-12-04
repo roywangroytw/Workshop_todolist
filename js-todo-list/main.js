@@ -34,35 +34,32 @@ document.addEventListener("DOMContentLoaded", () => {
       e.target.className === "checked"
     ) {
       e.target.classList.remove("checked");
-      const target = itemStorageObject.find(
-        (obj) => obj.id.toString() === e.target.dataset.id
-      );
-      const index = itemStorageObject.findIndex(
-        (obj) => obj.id.toString() === e.target.dataset.id
-      );
-      target.status = false;
-      itemStorageObject[index] = target;
+      let id = e.target.dataset.id;
+      itemStorageObject.forEach((data) => {
+        if (data.id == id) {
+          return (data.status = !data.status);
+        }
+      });
       localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     } else {
       e.target.classList.add("checked");
-      const target = itemStorageObject.find(
-        (obj) => obj.id.toString() === e.target.dataset.id
-      );
-      const index = itemStorageObject.findIndex(
-        (obj) => obj.id.toString() === e.target.dataset.id
-      );
-      target.status = true;
-      itemStorageObject[index] = target;
+      let id = e.target.dataset.id;
+      itemStorageObject.forEach((data) => {
+        if (data.id == id) {
+          return (data.status = !data.status);
+        }
+      });
       localStorage.setItem("itemlist", JSON.stringify(itemStorageObject));
     }
 
     // Task 2
     if (e.target && e.target.nodeName === "SPAN") {
-      const removetarget = e.target.parentElement;
-      removetarget.remove();
-      const a = removetarget.innerText.slice(0, -1);
+      let id = e.target.parentElement.dataset.id;
+      e.target.parentElement.remove();
 
-      const newDataAfterDelete = itemStorageObject.filter((e) => e !== a);
+      const newDataAfterDelete = itemStorageObject.filter(
+        (e) => e.id.toString() !== id
+      );
       localStorage.setItem("itemlist", JSON.stringify(newDataAfterDelete));
     }
   });
